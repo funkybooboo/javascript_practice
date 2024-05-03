@@ -10,8 +10,13 @@ const authenticater = require("./authenticater");
 
 const app = express();
 
+// settings
+app.set("view engine", "pug");
+app.set("views", "./views"); // default
+
 // configuration
-console.log(`application name: ${config.get("name")}`);
+const app_name = config.get("name");
+console.log(`application name: ${app_name}`);
 const mail_host_name = config.get("mail.host");
 console.log(`mail server: ${mail_host_name}`);
 //const mail_server_password = config.get("mail.password");
@@ -48,8 +53,12 @@ function validateCourse(course) {
 }
 
 // get endpoints
-app.get("/", (requestuest, responseponse) => {
-    responseponse.send("Landing Page");
+app.get("/", (request, response) => {
+    const context = {
+        title: app_name,
+        message: "Landing Page"
+    };
+    response.render("index", context); // html template
 });
 
 app.get("/api/courses", (request, response) => {
