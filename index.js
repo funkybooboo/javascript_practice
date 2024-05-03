@@ -1,12 +1,20 @@
 const express = require("express");
 const Joi = require("joi");
+const helmet = require("helmet");
+const morgan = require("morgan");
 const logger = require("./logger");
 const authenticater = require("./authenticater");
 
 const app = express();
 
-// middleware
-app.use(express.json());
+// express middleware
+app.use(express.json()); // reqest.body
+app.use(express.urlencoded({extended: true})); // key=value&key=value
+app.use(express.static("public")); // localhost:port/readme.txt
+// third party middleware
+app.use(helmet()); // exta security
+app.use(morgan("tiny")); // logs http requests
+// custom middleware
 app.use(logger);
 app.use(authenticater);
 
