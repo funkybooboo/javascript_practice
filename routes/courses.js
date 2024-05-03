@@ -1,6 +1,7 @@
 const express = require("express");
-const router = express.Router();
 const Joi = require("joi");
+
+const router = express.Router();
 
 // dummy data
 const courses = [
