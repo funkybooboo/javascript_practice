@@ -2,7 +2,7 @@
   "name": "testing-demo",
   "version": "1.0.0",
   "description": "",
-  "main": "db.js",
+  "main": "database.js",
   "directories": {
     "test": "tests"
   },
@@ -10,7 +10,7 @@
     "jest": "^29.7.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest --watchAll"
   },
   "keywords": [],
   "author": "",
