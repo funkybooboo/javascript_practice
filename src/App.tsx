@@ -1,15 +1,20 @@
-import DismissableAlert from "./components/DismissableAlert";
-import Button from "./components/Button";
+import './App.css';
+import Like from "./components/Like";
 import {useState} from "react";
 
 function App() {
 
-    const [show, setShow] = useState(false);
+    const [likes, setLikes] = useState(0)
+
+    const onCLick = () => {
+        console.log('Like button clicked')
+        setLikes(likes + 1)
+    }
 
     return (
         <div>
-            {show && <DismissableAlert onClick={() => setShow(false)}>This is a dismissable alert</DismissableAlert>}
-            <Button onClick={() => setShow(true)}>Show Alert</Button>
+            <Like onClick={onCLick} />
+            {likes}
         </div>
     )
 }
