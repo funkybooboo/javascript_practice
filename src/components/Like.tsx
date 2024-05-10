@@ -4,20 +4,26 @@ import {useState} from "react";
 
 interface Props {
     onClick: () => void;
+    onUnClick: () => void;
+    isSelected?: boolean;
 }
 
-function Like({ onClick }: Props) {
+function Like({ onClick, onUnClick, isSelected=false }: Props) {
 
-    const [clicked, setClicked] = useState(false)
+    const [selected, setSelected] = useState(isSelected);
 
-    const click = () => {
-        setClicked(!clicked)
-        onClick()
+    const toggle = () => {
+        setSelected(!selected);
+        if (selected) {
+            onUnClick();
+        } else {
+            onClick();
+        }
     }
 
     return (
         <div>
-            {clicked ? <FaHeart onClick={click} /> : <CiHeart onClick={click} />}
+            {selected ? <FaHeart color="#ff6b81" size={20} onClick={toggle} /> : <CiHeart size={20} onClick={toggle} /> }
         </div>
     );
 }

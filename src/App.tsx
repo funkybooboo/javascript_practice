@@ -11,9 +11,14 @@ function App() {
         setLikes(likes + 1)
     }
 
+    const onUnCLick = () => {
+        console.log('Unlike button clicked')
+        setLikes(likes - 1)
+    }
+
     return (
         <div>
-            <Like onClick={onCLick} />
+            <Like onClick={onCLick} onUnClick={onUnCLick} />
             {likes}
         </div>
     )
