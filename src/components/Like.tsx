@@ -13,13 +13,10 @@ function Like({ onClick, onUnClick, isSelected=false }: Props) {
     const [selected, setSelected] = useState(isSelected);
 
     const toggle = () => {
+        if (selected) onUnClick();
+        else onClick();
         setSelected(!selected);
-        if (selected) {
-            onUnClick();
-        } else {
-            onClick();
-        }
-    }
+    };
 
     return (
         <div>
