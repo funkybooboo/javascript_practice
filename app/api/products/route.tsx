@@ -1,11 +1,13 @@
 import {NextRequest, NextResponse} from "next/server";
 import schema from "./schema";
+import prisma from "@/prisma/client";
 
-export function GET(request: NextRequest) {
-    return NextResponse.json([
-        {id: 1, name: "Milk", price: 2.50 },
-        {id: 2, name: "Bread", price: 3.50 },
-    ]);
+export async function GET(request: NextRequest) {
+    const products = await prisma.product.findMany();
+    if (!products) {
+        return NextResponse.json({error: "No products found"}, {status: 404});
+    }
+    return NextResponse.json(products, {status: 200});
 }
 
 export async function POST(request: NextRequest) {
@@ -14,5 +16,13 @@ export async function POST(request: NextRequest) {
     if (!validation.success) {
         return NextResponse.json({error: validation.error.errors}, {status: 400});
     }
-    return NextResponse.json({id: 1, name: body.name, price: body.price}, {status: 201});
+    const newProduct = await prisma.product.create({
+        data: {
+            name: body.name,
+            description: body.description,
+            price: body.price,
+            stock: body.stock
+        }
+    });
+    return NextResponse.json(newProduct, {status: 201});
 }
