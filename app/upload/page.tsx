@@ -33,8 +33,6 @@ const UploadPage = () => {
                 {({ open }) => <button className={"btn btn-primary"} onClick={() => open}>Upload</button>}
             </CldUploadWidget>
         </>
-
-
     );
 }
 
