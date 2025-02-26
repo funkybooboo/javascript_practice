@@ -12,7 +12,8 @@
   "description": "Learning Redux",
   "dependencies": {
     "immer": "^10.1.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "redux": "^5.0.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.15",
