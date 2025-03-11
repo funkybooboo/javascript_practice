@@ -8,6 +8,15 @@ const unsubscribe = store.subscribe(() => {
     console.log("subscribe");
 });
 
+store.dispatch({
+    type: 'apiRequest',
+    payload: {
+        url: '/bugs',
+        onSuccess: 'bug_receive',
+        onError: 'api_failed',
+    }
+});
+
 // store.dispatch(projects.add({ name: "code" }));
 //
 // store.dispatch(projects.update({ id: 1, status: "doing" }));
