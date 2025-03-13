@@ -1,11 +1,10 @@
-// actions.ts
-import { createAction, PayloadAction } from "@reduxjs/toolkit";
+import { createAction } from "@reduxjs/toolkit";
 
-// Define the types for the action payloads
 export interface ApiRequestPayload {
     url: string;
-    method: 'get' | 'post' | 'put' | 'delete';  // Can extend based on methods you use
+    method: 'get' | 'post' | 'put' | 'delete';
     data: Record<string, any>;  // Adjust based on the shape of data
+    onStart?: string;
     onSuccess?: string;
     onError?: string;
 }
@@ -15,10 +14,9 @@ export interface ApiSuccessPayload {
 }
 
 export interface ApiFailPayload {
-    error: any;
+    error: string;
 }
 
-// Create the actions
-export const apiRequest = createAction<ApiRequestPayload>("api/request");
-export const apiSuccess = createAction<ApiSuccessPayload>("api/success");
-export const apiFail = createAction<ApiFailPayload>("api/fail");
+export const request = createAction<ApiRequestPayload>("api/request");
+export const success = createAction<ApiSuccessPayload>("api/success");
+export const fail = createAction<ApiFailPayload>("api/fail");

@@ -30,7 +30,7 @@ const slice = createSlice({
                 name: action.payload.name,
             };
             const normalized = normalize(newUser, userSchema);
-            users.entities[normalized.result] = normalized.entities.projects![normalized.result];
+            users.entities[normalized.result] = normalized.entities.users![normalized.result];
             users.ids.push(normalized.result);
         },
         remove: (users, action: PayloadAction<{ id: number }>) => {
@@ -43,8 +43,8 @@ const slice = createSlice({
 export const users = slice.actions;
 export default slice.reducer;
 
-// Selector to get unresolved bugs
+// Selector to get users
 export const getUsers = createSelector(
     [(state: RootState) => state.auth.users.entities],
-    (users) => Object.values(users),
+    (users) => Object.values(users)
 );

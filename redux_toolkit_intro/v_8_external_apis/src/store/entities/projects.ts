@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { normalize } from "normalizr";
 import { projectSchema } from "../schemas";
 import { RootState } from "../index";
-import {getUsers} from "../auth/users";
+import { getUsers } from "../auth/users";
 
 type Status = "todo" | "doing" | "done";
 
@@ -14,7 +14,7 @@ interface Project {
 }
 
 interface ProjectsState {
-    entities: Record<string, Project>;
+    entities: Record<number, Project>;
     ids: number[];
 }
 
@@ -40,9 +40,10 @@ const slice = createSlice({
                 user_ids: action.payload.user_ids || [], // Assign users if provided
             };
             const normalized = normalize(newProject, projectSchema);
-            projects.entities[normalized.result] =
-                normalized.entities.projects![normalized.result];
-            projects.ids.push(normalized.result);
+            const projectId = normalized.result as number;
+            projects.entities[projectId] =
+                normalized.entities.projects![projectId];
+            projects.ids.push(projectId);
         },
         remove: (projects, action: PayloadAction<{ id: number }>) => {
             delete projects.entities[action.payload.id];
@@ -68,25 +69,26 @@ const slice = createSlice({
 export const projects = slice.actions;
 export default slice.reducer;
 
-// Select project entities
+// Selector for project entities
 const getProjects = (state: RootState) => state.entities.projects.entities;
 
-// Selector to get projects with assigned users
+// Selector to get projects with assigned user objects
 export const getProjectsWithUsers = createSelector(
     [getProjects, getUsers],
     (projects, users) =>
         Object.values(projects).map((project) => ({
             ...project,
-            users: project.user_ids.map((user_id) => users[user_id]), // Map user IDs to user objects
+            users: project.user_ids.map((user_id) => users[user_id]),
         }))
 );
 
-// Selector to get unresolved bugs
+// Selector to get incomplete projects (status !== "done")
 export const getUncompleteProjects = createSelector(
     [getProjects],
-    (projects) => Object.values(projects).filter((project) => project.status !== 'done')
+    (projects) => Object.values(projects).filter((project) => project.status !== "done")
 );
 
+// Selector to get incomplete projects that have no assigned users
 export const getUnassignedUncompleteProjects = createSelector(
     [getProjects],
     (projects) =>

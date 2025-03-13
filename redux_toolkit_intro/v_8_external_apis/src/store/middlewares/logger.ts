@@ -14,29 +14,37 @@ const createLogger = (options: LoggerOptions = {}): Middleware<{}, RootState> =>
         prettyPrint = true,
     } = options;
 
-    return (store) => (next) => (action) => {
+    return (store) => (next) => (action: unknown) => {
+        // If the action is a function (e.g. a thunk), log its name and invoke it.
         if (typeof action === "function") {
-            console.warn("⚡ Dispatched a function action:", action.name || "[anonymous function]");
+            console.log("⚡ Dispatched a function action:", action.name || "[anonymous function]");
+            next(action);
         }
-        // @ts-ignore
-        else if (typeof action === "object" && ("type" in action)) {
-            // @ts-ignore
-            if (!filterActions(action.type)) {
+        // Check that action is an object with a "type" property.
+        else if (action && typeof action === "object" && "type" in action) {
+            // Cast action to an object with a type string.
+            const actionWithType = action as { type: string };
+
+            if (!filterActions(actionWithType.type)) {
                 return next(action);
             }
 
             const prevState = store.getState();
-            next(action);
+            const result = next(action);
             const nextState = store.getState();
 
-            const log = prettyPrint ? JSON.stringify : (data: any) => data;
+            const log = prettyPrint
+                ? (data: any) => JSON.stringify(data, null, 4)
+                : (data: any) => data;
 
             const logGroup = collapsed ? console.groupCollapsed : console.group;
-            logGroup(action.type);
-            console.log("%cPrevious State:", "color: gray", log(prevState, null, 4));
+            logGroup(actionWithType.type);
+            console.log("%cPrevious State:", "color: gray", log(prevState));
             console.log("%cAction:", "color: blue", action);
-            console.log("%cNext State:", "color: green", log(nextState, null, 4));
+            console.log("%cNext State:", "color: green", log(nextState));
             console.groupEnd();
+
+            return result;
         }
         else {
             console.warn("🚨 Received unexpected action:", action);

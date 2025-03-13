@@ -1,16 +1,17 @@
-import { Middleware } from "@reduxjs/toolkit";
+import { Middleware, Action } from "@reduxjs/toolkit";
 import { RootState } from "../index";
 
-const toast: Middleware<{}, RootState> = (store) => (next) => (action) => {
-    // @ts-ignore
-    if (typeof action === "object" && ("type" in action)) {
-        // @ts-ignore
-        if (action.type === 'error' && ("payload" in action) && ("message" in action.payload)) {
-            console.log("Toastify", action.payload.message);
-        }
-    } else {
-        return next(action);
+const toast: Middleware<{}, RootState> = (store) => (next) => (action: unknown) => {
+    const typedAction = action as Action & { payload?: any };
+    if (
+        typedAction.type === "error" &&
+        typedAction.payload &&
+        typeof typedAction.payload === "object" &&
+        "message" in typedAction.payload
+    ) {
+        console.log("toast", typedAction.payload.message);
     }
+    return next(action);
 };
 
 export default toast;
