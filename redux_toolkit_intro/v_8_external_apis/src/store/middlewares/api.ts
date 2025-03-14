@@ -1,14 +1,13 @@
 import axios from "axios";
 import { Middleware } from "@reduxjs/toolkit";
 import { RootState } from "../";
-import { request, success, fail, ApiRequestPayload } from "../api";
+import { requested, success, failed, ApiRequestPayload } from "../api";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 const api: Middleware<{}, RootState> = ({ dispatch }) => (next) => async (action) => {
-
     const typedAction = action as PayloadAction<ApiRequestPayload>;
 
-    if (typedAction.type !== request.type) {
+    if (typedAction.type !== requested.type) {
         return next(action);
     }
 
@@ -30,7 +29,7 @@ const api: Middleware<{}, RootState> = ({ dispatch }) => (next) => async (action
         if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-        dispatch(fail({ error: errorMessage }));
+        dispatch(failed({ error: errorMessage }));
 
         if (onError) dispatch({ type: onError, payload: errorMessage });
     }

@@ -2,7 +2,7 @@ import { createAction } from "@reduxjs/toolkit";
 
 export interface ApiRequestPayload {
     url: string;
-    method: 'get' | 'post' | 'put' | 'delete';
+    method: 'get' | 'post' | 'put' | 'delete' | 'patch';
     data: Record<string, any>;  // Adjust based on the shape of data
     onStart?: string;
     onSuccess?: string;
@@ -17,6 +17,6 @@ export interface ApiFailPayload {
     error: string;
 }
 
-export const request = createAction<ApiRequestPayload>("api/request");
+export const requested = createAction<ApiRequestPayload>("api/requested");
 export const success = createAction<ApiSuccessPayload>("api/success");
-export const fail = createAction<ApiFailPayload>("api/fail");
+export const failed = createAction<ApiFailPayload>("api/failed");

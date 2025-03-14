@@ -27,32 +27,29 @@ const initialState: BugsState = {
     lastFetch: null,
 };
 
-let lastId = 0;
-
 const slice = createSlice({
     name: "bugs",
     initialState,
     reducers: {
-        requestFail: (bugs, action: PayloadAction<any>) => {
+        apiRequestFailed: (bugs, action: PayloadAction<any>) => {
             bugs.loading = false;
         },
 
-        request: (bugs, action: PayloadAction<any>) => {
+        apiRequestBegin: (bugs, action: PayloadAction<any>) => {
             bugs.loading = true;
         },
 
-        receive: (bugs, action: PayloadAction<Bug[]>) => {
+        apiResponseReceived: (bugs, action: PayloadAction<Bug[]>) => {
             const normalized = normalize(action.payload, [bugSchema]);
             bugs.entities = normalized.entities.bugs || {};
-            // Ensure bugs.ids is typed as number[]
             bugs.ids = normalized.result as number[];
             bugs.lastFetch = Date.now();
             bugs.loading = false;
         },
 
-        add: (bugs, action: PayloadAction<{ project_id: number; description: string }>) => {
+        added: (bugs, action: PayloadAction<{ project_id: number; description: string }>) => {
             const newBug: Bug = {
-                id: ++lastId,
+                id: bugs.lastFetch!,
                 project_id: action.payload.project_id,
                 description: action.payload.description,
                 is_resolved: false,
@@ -63,12 +60,19 @@ const slice = createSlice({
             bugs.ids.push(bugId);
         },
 
-        remove: (bugs, action: PayloadAction<{ id: number }>) => {
+        assigned: (bugs, action: PayloadAction<{ id: number; project_id: number }>) => {
+            const bug = bugs.entities[action.payload.id];
+            if (bug) {
+                bug.project_id = action.payload.project_id;
+            }
+        },
+
+        removed: (bugs, action: PayloadAction<{ id: number }>) => {
             delete bugs.entities[action.payload.id];
             bugs.ids = bugs.ids.filter((id) => id !== action.payload.id);
         },
 
-        resolve: (bugs, action: PayloadAction<{ id: number }>) => {
+        resolved: (bugs, action: PayloadAction<{ id: number }>) => {
             const bug = bugs.entities[action.payload.id];
             if (bug) {
                 bug.is_resolved = true;
@@ -77,43 +81,55 @@ const slice = createSlice({
     },
 });
 
-export const bugs = slice.actions;
 export default slice.reducer;
 
-// Selector to get unresolved bugs
-export const getUnresolvedBugs = createSelector(
+export const selectUnresolvedBugs = createSelector(
     [(state: RootState) => state.entities.bugs.entities],
     (bugs) => Object.values(bugs).filter((bug) => !bug.is_resolved)
 );
 
 const url = '/bugs';
 
-// Thunk to add a bug
-export const addBug = (bug: { project_id: number; description: string }) => (dispatch: Dispatch) => {
-    return dispatch(
-        api.request({
-            url,
-            method: 'post',
-            data: bug,
-            onSuccess: slice.actions.add.type,
-        })
-    );
-};
+export const addBug = (bug: { project_id: number; description: string }) => (dispatch: Dispatch) => dispatch(
+    api.requested({
+        url,
+        method: 'post',
+        data: bug,
+        onSuccess: slice.actions.added.type,
+    })
+);
 
-// Thunk to get bugs from the API
-export const getBugs = () => (dispatch: Dispatch, getState: () => RootState) => {
+export const resolveBug = (id: number) => (dispatch: Dispatch) => dispatch(
+    api.requested({
+        url: `${url}/${id}`,
+        method: 'patch',
+        data: { is_resolved: true },
+        onSuccess: slice.actions.resolved.type,
+    })
+);
+
+export const assignBugToProject = (id: number, project_id: number) => (dispatch: Dispatch) => dispatch(
+    api.requested({
+        url: `${url}/${id}`,
+        method: 'patch',
+        data: { project_id },
+        onSuccess: slice.actions.assigned.type,
+    })
+);
+
+export const loadBugs = () => (dispatch: Dispatch, getState: () => RootState) => {
     const { lastFetch } = getState().entities.bugs;
     // If lastFetch exists and diff is less than 10 minutes, skip fetching.
     if (lastFetch && moment().diff(moment(lastFetch), 'minutes') < 10) return;
 
     return dispatch(
-        api.request({
+        api.requested({
             url,
             method: 'get',
             data: {},
-            onStart: slice.actions.request.type,
-            onSuccess: slice.actions.receive.type,
-            onError: slice.actions.requestFail.type,
+            onStart: slice.actions.apiRequestBegin.type,
+            onSuccess: slice.actions.apiResponseReceived.type,
+            onError: slice.actions.apiRequestFailed.type,
         })
     );
 };

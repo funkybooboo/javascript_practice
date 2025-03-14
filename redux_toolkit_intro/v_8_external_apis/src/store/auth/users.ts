@@ -24,7 +24,7 @@ const slice = createSlice({
     name: "users",
     initialState,
     reducers: {
-        add: (users, action: PayloadAction<{ name: string }>) => {
+        added: (users, action: PayloadAction<{ name: string }>) => {
             const newUser: User = {
                 id: ++lastId,
                 name: action.payload.name,
@@ -33,7 +33,7 @@ const slice = createSlice({
             users.entities[normalized.result] = normalized.entities.users![normalized.result];
             users.ids.push(normalized.result);
         },
-        remove: (users, action: PayloadAction<{ id: number }>) => {
+        removed: (users, action: PayloadAction<{ id: number }>) => {
             delete users.entities[action.payload.id];
             users.ids = users.ids.filter((id) => id !== action.payload.id);
         },
@@ -44,7 +44,7 @@ export const users = slice.actions;
 export default slice.reducer;
 
 // Selector to get users
-export const getUsers = createSelector(
+export const selectUsers = createSelector(
     [(state: RootState) => state.auth.users.entities],
     (users) => Object.values(users)
 );

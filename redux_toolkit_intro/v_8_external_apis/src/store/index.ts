@@ -8,17 +8,16 @@ import api from "./middlewares/api";
 
 export type RootState = ReturnType<typeof reducer>;
 
-function create_store() {
+function configure_store() {
     return configureStore({
         reducer,
         middleware: (getDefaultMiddleware) =>
             getDefaultMiddleware().concat(
                 filter,
                 createLogger({ collapsed: false, prettyPrint: true }),
-                toast,
                 api,
             )
     });
 }
 
-export default create_store;
+export default configure_store;
