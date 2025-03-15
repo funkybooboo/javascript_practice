@@ -6,14 +6,14 @@ import { RootState } from "../index";
 import * as api from "../api";
 import moment from "moment";
 
-interface Bug {
+export interface Bug {
     id: number;
     project_id: number;
     description: string;
     is_resolved: boolean;
 }
 
-export interface BugsState {
+interface BugsState {
     entities: Record<number, Bug>;
     ids: number[];
     loading: boolean;
@@ -86,6 +86,11 @@ export default slice.reducer;
 export const selectUnresolvedBugs = createSelector(
     [(state: RootState) => state.entities.bugs.entities],
     (bugs) => Object.values(bugs).filter((bug) => !bug.is_resolved)
+);
+
+export const selectBugs = createSelector(
+    [(state: RootState) => state.entities.bugs.entities],
+    (bugs) => Object.values(bugs)
 );
 
 const url = '/bugs';
