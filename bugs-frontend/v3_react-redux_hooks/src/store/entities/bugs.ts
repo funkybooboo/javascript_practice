@@ -18,6 +18,7 @@ interface BugsState {
     ids: number[];
     loading: boolean;
     lastFetch: number | null;
+    errorMessage: string;
 }
 
 const initialState: BugsState = {
@@ -25,6 +26,7 @@ const initialState: BugsState = {
     ids: [],
     loading: false,
     lastFetch: null,
+    errorMessage: "",
 };
 
 const slice = createSlice({
@@ -33,10 +35,12 @@ const slice = createSlice({
     reducers: {
         apiRequestFailed: (bugs, action: PayloadAction<any>) => {
             bugs.loading = false;
+            bugs.errorMessage = action.payload.errorMessage;
         },
 
         apiRequestBegin: (bugs, action: PayloadAction<any>) => {
             bugs.loading = true;
+            bugs.errorMessage = "";
         },
 
         apiResponseReceived: (bugs, action: PayloadAction<Bug[]>) => {
@@ -45,6 +49,7 @@ const slice = createSlice({
             bugs.ids = normalized.result as number[];
             bugs.lastFetch = Date.now();
             bugs.loading = false;
+            bugs.errorMessage = "";
         },
 
         added: (bugs, action: PayloadAction<{ id: number, project_id: number; description: string }>) => {
@@ -91,6 +96,16 @@ export const selectUnresolvedBugs = createSelector(
 export const selectBugs = createSelector(
     [(state: RootState) => state.entities.bugs.entities],
     (bugs) => Object.values(bugs)
+);
+
+export const selectLoading = createSelector(
+    [(state: RootState) => state.entities.bugs.loading],
+    (loading) => loading
+);
+
+export const selectErrorMessage = createSelector(
+    [(state: RootState) => state.entities.bugs.errorMessage],
+    (errorMessage) => errorMessage
 );
 
 const url = '/bugs';

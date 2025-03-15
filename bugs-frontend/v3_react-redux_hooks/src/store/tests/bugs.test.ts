@@ -159,7 +159,8 @@ describe("bugsSlice", () => {
                     entities: {},
                     ids: [],
                     loading: false,
-                    lastFetch: null
+                    lastFetch: null,
+                    errorMessage: ""
                 },
                 projects: {
                     entities: {},
