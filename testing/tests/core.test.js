@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getCoupons, calculateDiscount, validateUserInput } from "../src/core.js";
+import {getCoupons, calculateDiscount, validateUserInput, isPriceInRange, isValidUsername} from "../src/core.js";
 
 describe('getCoupons', () => {
     it('should return two elements', () => {
@@ -69,5 +69,37 @@ describe('validateUserInput', () => {
         expect(validateUserInput('nate', 16)).toMatch(/invalid age/i);
         expect(validateUserInput('nate', -1)).toMatch(/invalid age/i);
         expect(validateUserInput('nate', 100)).toMatch(/invalid age/i);
+    });
+});
+
+describe('isPriceInRange', () => {
+    it('should return false when the price is outside the range', () => {
+        expect(isPriceInRange(-10, 0, 100)).toBe(false);
+        expect(isPriceInRange(120, 0, 100)).toBe(false);
+    });
+
+    it('should return true when the price is equal to the boundaries', () => { // boundary test
+        expect(isPriceInRange(0, 0, 100)).toBe(true);
+        expect(isPriceInRange(100, 0, 100)).toBe(true);
+    });
+
+    it('should return true when the price is within the range', () => {
+        expect(isPriceInRange(50, 0, 100)).toBe(true);
+    });
+});
+
+describe('isValidUsername', () => {
+    it('should return false if username is outside the length range', () => {
+        expect(isValidUsername('asdf', 5, 15)).toBe(false);
+        expect(isValidUsername('asdf', 6, 15)).toBe(false);
+    });
+
+    it('should return true if username is equal to the length range boundaries', () => { // boundary test
+        expect(isValidUsername('asdf', 4, 15)).toBe(true);
+        expect(isValidUsername('asdf', 1, 4)).toBe(true);
+    });
+
+    it('should return true if username is between the length range boundaries', () => {
+        expect(isValidUsername('asdfasdf', 4, 15)).toBe(true);
     });
 });

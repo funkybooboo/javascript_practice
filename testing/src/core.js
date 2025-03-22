@@ -47,10 +47,7 @@ export function isPriceInRange(price, min, max) {
 }
 
 // Exercise: Boundary testing
-export function isValidUsername(username) {
-  const minLength = 5;
-  const maxLength = 15;
-
+export function isValidUsername(username, minLength = 5, maxLength = 15) {
   return username.length >= minLength && username.length <= maxLength;
 }
 
