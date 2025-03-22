@@ -1,0 +1,66 @@
+html, body, p, div, h1, h2, h3, h4{
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.title{
+    font-size: 50px;
+    padding-left: 100px;
+    padding-top: 30px;
+}
+
+.space{
+    padding-top: 50px;
+    border-top: 1px solid gray;
+    max-width: 5%;
+    margin-left: 100px;
+}
+
+
+#clickMe {
+    background-color: transparent;
+    display: inline-block;
+    padding:10px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    margin-left: 100px; 
+  }
+
+  
+  #clickMe:hover {
+    cursor: pointer;
+  }
+
+  .darkMode {
+    background-color: rgb(44, 44, 44);
+    color: white;
+  }
+
+  .darkMode .products{
+      background-color: gray;
+  }
+
+  #products{
+      padding-left: 100px;
+      padding-right: 100px;
+  }
+
+  .products p{
+      flex-basis: 33%;
+  }
+
+.products{
+    border: 1px solid gray;
+    border-radius: 5px;
+    max-width: 80%;
+    width: auto;
+    display: flex;
+    justify-content: space-between;
+    font-size: large;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+}
