@@ -52,12 +52,7 @@ export function isValidUsername(username, minLength = 5, maxLength = 15) {
 }
 
 // Exercise: Boundary testing
-export function canDrive(age, countryCode) {
-  const legalDrivingAge = {
-    US: 16,
-    UK: 17,
-  };
-
+export function canDrive(age, countryCode, legalDrivingAge = {US: 16, UK: 17}) {
   if (!legalDrivingAge[countryCode]) {
     return 'Invalid country code';
   }

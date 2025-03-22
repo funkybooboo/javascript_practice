@@ -1,5 +1,12 @@
 import { describe, it, expect } from "vitest";
-import {getCoupons, calculateDiscount, validateUserInput, isPriceInRange, isValidUsername} from "../src/core.js";
+import {
+    getCoupons,
+    calculateDiscount,
+    validateUserInput,
+    isPriceInRange,
+    isValidUsername,
+    canDrive
+} from "../src/core.js";
 
 describe('getCoupons', () => {
     it('should return two elements', () => {
@@ -101,5 +108,26 @@ describe('isValidUsername', () => {
 
     it('should return true if username is between the length range boundaries', () => {
         expect(isValidUsername('asdfasdf', 4, 15)).toBe(true);
+    });
+});
+
+describe('canDrive', () => {
+    it('should return invalid if the countryCode is not registered', () => {
+        expect(canDrive(18, 'FR', {US: 16, UK: 17})).toMatch(/invalid/i);
+    });
+
+    it('should return false if they are not old enough to drive for that countryCode', () => {
+        expect(canDrive(1, 'US', {US: 16, UK: 17})).toBe(false);
+        expect(canDrive(3, 'UK', {US: 16, UK: 17})).toBe(false);
+    });
+
+    it('should return true if they are just barely old enough to drive for that countryCode', () => { // boundary test
+        expect(canDrive(16, 'US', {US: 16, UK: 17})).toBe(true);
+        expect(canDrive(17, 'UK', {US: 16, UK: 17})).toBe(true);
+    });
+
+    it('should return true if they are old enough to drive for that countryCode', () => {
+        expect(canDrive(50, 'US', {US: 16, UK: 17})).toBe(true);
+        expect(canDrive(45, 'UK', {US: 16, UK: 17})).toBe(true);
     });
 });
