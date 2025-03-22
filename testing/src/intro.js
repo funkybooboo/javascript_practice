@@ -11,9 +11,15 @@ export function fizzBuzz(n) {
   return n.toString();
 }
 
-export function calculateAverage(numbers) {
-  if (numbers.length === 0) return NaN;
-  if (numbers.length === 1) return numbers[0];
-  const sum = numbers.reduce((sum, current) => sum + current, 0);
-  return sum / numbers.length;
+export function average(ns) {
+  if (ns.length === 0) return NaN;
+  if (ns.length === 1) return ns[0];
+  const sum = ns.reduce((sum, current) => sum + current, 0);
+  return sum / ns.length;
+}
+
+export function factorial(n) {
+  if (n < 0) return undefined;
+  if (n < 2) return 1;
+  return n * factorial(n - 1);
 }
