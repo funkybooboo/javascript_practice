@@ -1,0 +1,141 @@
+html, body, h1, h2, h3, h4, p, ol, ul,li, a {
+  padding: 0;
+  border: 0;
+  margin: 0;
+  color: white;
+  font-family: 'proxima nova', Helvetica, sans-serif;
+  font-weight: lighter;
+}
+
+.mainpage {
+    background-image: url('https://bloximages.newyork1.vip.townnews.com/thegriffonnews.com/content/tncms/assets/v3/editorial/0/d7/0d727f22-3abc-52c2-9094-032de830d0a5/5dc068235e25a.image.jpg?crop=1115%2C627%2C192%2C0&resize=1115%2C627&order=crop%2Cresize');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 800px;
+  }
+
+  .top {
+    border-bottom: white solid 1px;
+    width: 100%;
+    position: fixed;
+  }
+
+  .topright {
+    float: right;
+    justify-content: flex-end;
+    display: flex;
+  }
+
+  h3 {
+    padding-right: 30px;
+    padding-top: 20px;
+    font-weight: lighter;
+  }
+
+.topmiddle {
+  padding-top: 45px;
+  border-bottom: white solid 1px;
+  
+}
+
+  .topleft {
+    padding-left: 30px;
+    float: left;
+    font-weight: lighter;
+  }
+
+  .maintitle {
+    font-weight: 600;
+    padding-top: 300px;
+
+  }
+
+h1 {
+  text-align: center;
+  content: ""; 
+  display: block; 
+  margin: 0 auto; 
+  width: 40%; 
+  padding-top: 50px; 
+  border-bottom: 1px solid white;
+  font-size: 100px;
+}
+
+h2 {
+  text-align: center;
+  font-weight: 400;
+  font-size: 40px;
+
+}
+
+.secondpage {
+  background-image: url('https://static01.nyt.com/images/2007/06/13/dining/13rat600a.jpg?quality=75&auto=webp&disable=upscale');
+  background-repeat: no-repeat;
+  background-color: black;
+  background-size: 600px 400px;
+    
+  height: 400px;
+  width: 100%;
+}
+
+.pagecontent2 {
+  float: left;
+  text-align: right;
+  padding-left: 50%;
+  padding-top: 80px;
+  padding-right: 80px;
+
+}
+
+.thirdpage {
+  background-image: url('https://www.pluggedin.com/wp-content/uploads/2019/12/ratatouille-1024x583.png');
+  background-repeat: no-repeat;
+  background-color: rgb(20, 20, 20);
+  background-size: 600px 400px;
+  background-position: right;
+  
+  height: 400px;
+  width: 100%;
+
+}
+
+.pagecontent3 {
+  float: left;
+  text-align: left;
+
+  padding-right: 50%;
+  padding-top: 80px;
+  padding-left: 80px;
+}
+
+.forthpage {
+  background-image: url('https://a.ltrbxd.com/resized/sm/upload/do/wf/l1/ff/ratatouille-120-1200-1200-675-675-crop-000000.jpg?k=19afec508c');
+  background-repeat: no-repeat;
+  background-color: rgb(31, 31, 31);
+  background-size: 600px 400px;
+  
+  height: 400px;
+  width: 100%;
+}
+
+.pagecontent4 {
+  float: left;
+  text-align: right;
+
+  padding-left: 50%;
+  padding-top: 80px;
+  padding-right: 80px;
+}
+
+h4 {
+  text-align: left;
+  font-size: xx-large;
+  padding-bottom: 10px;
+  
+}
+
+p {
+  text-align: left;
+  word-wrap: break-word;
+  font-size: larger;
+}

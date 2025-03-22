@@ -1,0 +1,50 @@
+.myh1 {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif, 'Times New Roman', Times, serif;
+    text-align: center;
+    padding-top: 5%;
+    font-size: 350%
+
+}
+.myh4 {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif, 'Times New Roman', Times, serif;
+    text-align: center;
+    font-size: 120%;
+
+}
+body { 
+    background-image: url('https://images.unsplash.com/photo-1502957291543-d85480254bf8?ixlib=rb-1.2.1&w=1000&q=80');
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+}
+.menu {
+    background-color: #2f2f2f;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif, 'Times New Roman', Times, serif;
+    height: 50px;
+    
+}
+
+a:link {
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+
+}
+a:visited {
+    color: white;
+    text-decoration: none;
+
+}
+a:hover {
+    color: blue;
+    text-decoration: none;
+
+}
+a:active {
+    color: tomato;
+    text-decoration: none;
+
+}
