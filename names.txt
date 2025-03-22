@@ -1,0 +1,30 @@
+funkybooboo/dotfiles	My systems configurations	public	2025-03-22T23:07:42Z
+funkybooboo/javascript_practice		public	2025-03-22T22:46:22Z
+funkybooboo/rust_practice	Learing rust	public	2025-03-22T22:40:44Z
+funkybooboo/c_practice	Learn C	public	2025-03-22T22:39:06Z
+funkybooboo/ai_practice	Playing with AI	public	2025-03-22T22:36:19Z
+funkybooboo/asm_practice	Learning x86 asm with nasm	public	2025-03-21T23:36:36Z
+funkybooboo/knowlege_base	Notes on all the things	private	2025-03-09T03:47:19Z
+funkybooboo/codecrafters-kafka-rust		public	2025-03-04T03:49:20Z
+funkybooboo/problem_practice	The place I solve LeetCode, HackerRank, and HackTheBox problems.	public	2025-02-12T01:32:38Z
+funkybooboo/codecrafters-interpreter-rust	codecrafters interpreter challange	public	2025-02-01T02:05:03Z
+funkybooboo/codecrafters-shell-cpp	CodeCrafters Shell Challange in C++	public	2025-01-27T02:16:16Z
+funkybooboo/codecrafters-git-python	CodeCrafters Git challange in Python	public	2025-01-20T16:45:24Z
+funkybooboo/adventure_creator	Make your own adventures and have your friends play them!	public	2025-01-18T01:54:03Z
+funkybooboo/civilization_simulation	Multiagent system, Epsilon Greedy, Optimal Stopping, Priority Scheduler.	public, fork	2025-01-09T03:50:33Z
+funkybooboo/funkybooboo		public	2024-12-12T20:17:45Z
+funkybooboo/ideahub	IdeaHub connects people with great software ideas to developers who can bring them to life, fostering collaboration and innovation to turn concepts into real-world open-source projects.	public	2024-12-11T15:34:46Z
+funkybooboo/usu_cs3460_exam_study_guide		private	2024-12-07T20:11:49Z
+funkybooboo/usu_cs3100_exam_study_guide		private	2024-11-30T02:17:32Z
+funkybooboo/csharp_practice	Learning C#	public	2024-11-25T16:19:50Z
+funkybooboo/usu_cs3460_program8	Making my own vector class	public	2024-11-24T19:58:55Z
+funkybooboo/usu_cs3100_program6	Page replacement algorithms	public	2024-11-20T04:10:16Z
+funkybooboo/usu_cs3460_program7	Custom Smart Pointers	public	2024-11-15T02:28:16Z
+funkybooboo/usu_cs5060_program4	Reinforcement Learning	public	2024-11-09T19:16:51Z
+funkybooboo/usu_cs3460_program6	Conway's Game of Life	public	2024-11-02T22:37:38Z
+funkybooboo/usu_cs3100_program5	various scheduling algorithms	public	2024-10-29T00:10:48Z
+funkybooboo/usu_cs3460_program5	Word Predictor	public	2024-10-21T17:06:15Z
+funkybooboo/quizzer	enter in quiz questions into a json file and get quizzed	public	2024-10-19T02:08:56Z
+funkybooboo/usu_cs5060_exam1		public	2024-10-13T00:33:29Z
+funkybooboo/usu_cs3100_program4	computing the digits of Pi, in parallel	public	2024-10-10T19:26:54Z
+funkybooboo/usu_cs5060_program3	Options as a Financial Tool	public	2024-10-10T17:34:00Z
