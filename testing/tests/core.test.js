@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getCoupons, calculateDiscount } from "../src/core.js";
+import { getCoupons, calculateDiscount, validateUserInput } from "../src/core.js";
 
 describe('getCoupons', () => {
     it('should return two elements', () => {
@@ -50,5 +50,24 @@ describe('calculateDiscount', () => {
 
     it('should handle a invalid discount code', () => { // negative test
         expect(calculateDiscount(10, 'INVALID')).toBe(10);
+    });
+});
+
+describe('validateUserInput', () => {
+    it('should return success if given valid input', () => {
+        expect(validateUserInput('nate', 20)).toMatch(/success/i);
+    });
+
+    it('should return invalid if given invalid username input', () => {
+        expect(validateUserInput('a', 20)).toMatch(/invalid username/i);
+        expect(validateUserInput('a'.repeat(256), 20)).toMatch(/invalid username/i);
+        expect(validateUserInput(10, 20)).toMatch(/invalid username/i);
+    });
+
+    it('should return invalid if given invalid age input', () => {
+        expect(validateUserInput('nate', '20')).toMatch(/invalid age/i);
+        expect(validateUserInput('nate', 16)).toMatch(/invalid age/i);
+        expect(validateUserInput('nate', -1)).toMatch(/invalid age/i);
+        expect(validateUserInput('nate', 100)).toMatch(/invalid age/i);
     });
 });
