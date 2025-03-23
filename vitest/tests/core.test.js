@@ -80,18 +80,28 @@ describe('validateUserInput', () => {
 });
 
 describe('isPriceInRange', () => {
-    it('should return false when the price is outside the range', () => {
-        expect(isPriceInRange(-10, 0, 100)).toBe(false);
-        expect(isPriceInRange(120, 0, 100)).toBe(false);
-    });
+    // it('should return false when the price is outside the range', () => {
+    //     expect(isPriceInRange(-10, 0, 100)).toBe(false);
+    //     expect(isPriceInRange(120, 0, 100)).toBe(false);
+    // });
+    //
+    // it('should return true when the price is equal to the boundaries', () => { // boundary test
+    //     expect(isPriceInRange(0, 0, 100)).toBe(true);
+    //     expect(isPriceInRange(100, 0, 100)).toBe(true);
+    // });
+    //
+    // it('should return true when the price is within the range', () => {
+    //     expect(isPriceInRange(50, 0, 100)).toBe(true);
+    // });
 
-    it('should return true when the price is equal to the boundaries', () => { // boundary test
-        expect(isPriceInRange(0, 0, 100)).toBe(true);
-        expect(isPriceInRange(100, 0, 100)).toBe(true);
-    });
-
-    it('should return true when the price is within the range', () => {
-        expect(isPriceInRange(50, 0, 100)).toBe(true);
+    it.each([ // parameterized test replaces the tests above
+        { price: -10, min: 0, max: 100, result: false },
+        { price: 120, min: 0, max: 100, result: false },
+        { price: 0, min: 0, max: 100, result: true },
+        { price: 100, min: 0, max: 100, result: true },
+        { price: 50, min: 0, max: 100, result: true },
+    ])('should return $result for ($price, $min, $max)', ({ price, min, max, result }) => {
+        expect(isPriceInRange(price, min, max)).toBe(result);
     });
 });
 
@@ -116,18 +126,29 @@ describe('canDrive', () => {
         expect(canDrive(18, 'FR', {US: 16, UK: 17})).toMatch(/invalid/i);
     });
 
-    it('should return false if they are not old enough to drive for that countryCode', () => {
-        expect(canDrive(1, 'US', {US: 16, UK: 17})).toBe(false);
-        expect(canDrive(3, 'UK', {US: 16, UK: 17})).toBe(false);
-    });
+    // it('should return false if they are not old enough to drive for that countryCode', () => {
+    //     expect(canDrive(1, 'US', {US: 16, UK: 17})).toBe(false);
+    //     expect(canDrive(3, 'UK', {US: 16, UK: 17})).toBe(false);
+    // });
+    //
+    // it('should return true if they are just barely old enough to drive for that countryCode', () => { // boundary test
+    //     expect(canDrive(16, 'US', {US: 16, UK: 17})).toBe(true);
+    //     expect(canDrive(17, 'UK', {US: 16, UK: 17})).toBe(true);
+    // });
+    //
+    // it('should return true if they are old enough to drive for that countryCode', () => {
+    //     expect(canDrive(50, 'US', {US: 16, UK: 17})).toBe(true);
+    //     expect(canDrive(45, 'UK', {US: 16, UK: 17})).toBe(true);
+    // });
 
-    it('should return true if they are just barely old enough to drive for that countryCode', () => { // boundary test
-        expect(canDrive(16, 'US', {US: 16, UK: 17})).toBe(true);
-        expect(canDrive(17, 'UK', {US: 16, UK: 17})).toBe(true);
-    });
-
-    it('should return true if they are old enough to drive for that countryCode', () => {
-        expect(canDrive(50, 'US', {US: 16, UK: 17})).toBe(true);
-        expect(canDrive(45, 'UK', {US: 16, UK: 17})).toBe(true);
+    it.each([ // parameterized tests replace the above code
+        { age: 1, countryCode: 'US', legalDriveAge: { US: 16, UK: 17 }, result: false },
+        { age: 3, countryCode: 'UK', legalDriveAge: { US: 16, UK: 17 }, result: false },
+        { age: 16, countryCode: 'US', legalDriveAge: { US: 16, UK: 17 }, result: true },
+        { age: 17, countryCode: 'UK', legalDriveAge: { US: 16, UK: 17 }, result: true },
+        { age: 50, countryCode: 'US', legalDriveAge: { US: 16, UK: 17 }, result: true },
+        { age: 45, countryCode: 'UK', legalDriveAge: { US: 16, UK: 17 }, result: true },
+    ])('should return $result for ($age, $countryCode, $legalDriveAge)', ({ age, countryCode, legalDriveAge, result }) => {
+        expect(canDrive(age, countryCode, legalDriveAge)).toBe(result);
     });
 });
