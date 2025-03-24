@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, beforeAll, afterEach, afterAll } from "vitest";
 
 describe('test suite', () => {
     it('test case', () => {
@@ -28,5 +28,35 @@ describe('test suite', () => {
         // expect(r).toEqual({ name: 'Nate' }); // Tight what if we add an id property to r
         // expect(r).toMatchObject({ name: 'Nate' }); // match on a subset of attributes. This can be tight tho as we are making an assertion on the value
         expect(r).toHaveProperty('name');
+    });
+});
+
+describe('test suite', () => {
+    beforeAll(() => {
+        console.log('before all called');
+    });
+
+    beforeEach(() => {
+        console.log('before each called');
+    });
+
+    it('test case 1', () => {
+        console.log('test case 1 called');
+    });
+
+    it('test case 2', () => {
+        console.log('test case 2 called');
+    });
+
+    it('test case 3', () => {
+        console.log('test case 3 called');
+    });
+
+    afterEach(() => {
+        console.log('after each called');
+    });
+
+    afterAll(() => {
+        console.log('after all called');
     });
 });

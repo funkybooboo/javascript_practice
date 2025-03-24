@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import {
     getCoupons,
     calculateDiscount,
     validateUserInput,
     isPriceInRange,
     isValidUsername,
-    canDrive, fetchData
+    canDrive, fetchData, Stack
 } from "../src/core.js";
 
 describe('getCoupons', () => {
@@ -157,5 +157,100 @@ describe('fetchData', () => {
     it('should return an array of numbers', async () => {
         const result = await fetchData();
         expect(result.length).toBeGreaterThan(0);
+    });
+});
+
+describe('Stack', () => {
+    let stack;
+
+    beforeEach(() => {
+        stack = new Stack();
+    });
+
+    describe('push', () => {
+        it('should add an item to the stack', () => {
+            stack.push(1);
+
+            expect(stack.size()).toBe(1);
+        });
+
+        it('should add an item to top of the stack', () => {
+            stack.push(1);
+            stack.push(2);
+
+            expect(stack.size()).toBe(2);
+            expect(stack.peek()).toBe(2);
+        });
+    });
+
+    describe('pop', () => {
+        it('should remove and return the top item from the stack', () => {
+            stack.push(1);
+            stack.push(2);
+
+            expect(stack.pop()).toBe(2);
+            expect(stack.size()).toBe(1);
+        });
+
+        it('should throw an error if stack is empty', () => {
+            expect(stack.size()).toBe(0);
+            expect(() => stack.pop()).toThrow(/empty/i);
+        });
+    });
+
+    describe('peek', () => {
+        it('should return the top item from the stack without removing it', () => {
+            stack.push(1);
+            stack.push(2);
+            expect(stack.size()).toBe(2);
+            expect(stack.peek()).toBe(2);
+        });
+
+        it('should throw an error if stack is empty', () => {
+            expect(stack.size()).toBe(0);
+            expect(() => stack.peek()).toThrow(/empty/i);
+        });
+    });
+
+    describe('isEmpty', () => {
+        it('should return true if the stack is empty', () => {
+            expect(stack.size()).toBe(0);
+            expect(stack.isEmpty()).toBe(true);
+        });
+
+        it('should return false if the stack is not empty', () => {
+            stack.push(1);
+            expect(stack.size()).toBe(1);
+            expect(stack.isEmpty()).toBe(false);
+        });
+    });
+
+    describe('size', () => {
+        it('should return 0 if no items are in the stack', () => {
+            expect(stack.size()).toBe(0);
+        });
+
+        it('should return the number of items in the stack', () => {
+            stack.push(1);
+            stack.push(1);
+            stack.push(1);
+            expect(stack.size()).toBe(3);
+        });
+    });
+
+    describe('clear', () => {
+        it('should remove all items from the stack', () => {
+            stack.push(1);
+            stack.push(1);
+            expect(stack.size()).toBe(2);
+            stack.clear();
+            expect(stack.size()).toBe(0);
+        });
+
+        it('should not do anything if the stack is already empty', () => {
+            expect(stack.size()).toBe(0);
+            stack.clear();
+            expect(stack.size()).toBe(0);
+        });
     });
 });
