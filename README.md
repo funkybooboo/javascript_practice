@@ -1,4 +1,4 @@
-# Project Title
+# Javascript Practice
 
 
 ## License
