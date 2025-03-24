@@ -5,7 +5,7 @@ import {
     validateUserInput,
     isPriceInRange,
     isValidUsername,
-    canDrive
+    canDrive, fetchData
 } from "../src/core.js";
 
 describe('getCoupons', () => {
@@ -150,5 +150,12 @@ describe('canDrive', () => {
         { age: 45, countryCode: 'UK', legalDriveAge: { US: 16, UK: 17 }, result: true },
     ])('should return $result for ($age, $countryCode, $legalDriveAge)', ({ age, countryCode, legalDriveAge, result }) => {
         expect(canDrive(age, countryCode, legalDriveAge)).toBe(result);
+    });
+});
+
+describe('fetchData', () => {
+    it('should return an array of numbers', async () => {
+        const result = await fetchData();
+        expect(result.length).toBeGreaterThan(0);
     });
 });
