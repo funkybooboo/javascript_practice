@@ -1,7 +1,11 @@
-import { vi, it, expect, describe } from 'vitest';
-import { getPriceInCurrency, getShippingInfo } from "../src/mocking.js";
+import {vi, it, expect, describe, beforeEach} from 'vitest';
+import {getPriceInCurrency, getShippingInfo, login, renderPage, signUp, submitOrder} from "../src/mocking.js";
 import { getExchangeRate } from "../src/libs/currency.js";
 import {getShippingQuote} from "../src/libs/shipping.js";
+import {trackPageView} from "../src/libs/analytics.js";
+import {charge} from "../src/libs/payment.js";
+import {sendEmail} from "../src/libs/email.js";
+import security from "../src/libs/security.js";
 
 vi.mock('../src/libs/currency');
 
@@ -26,6 +30,7 @@ describe('getShippingInfo', () => {
 
         const info = getShippingInfo('Test');
 
+        expect(getShippingQuote).toHaveBeenCalledTimes(1);
         expect(getShippingQuote).toHaveBeenCalledWith('Test');
         expect(getShippingQuote).toHaveReturned({ cost: 1, estimatedDays: 1 });
         expect(info).toMatch(/\$1/i);
@@ -37,8 +42,121 @@ describe('getShippingInfo', () => {
 
         const info = getShippingInfo('Test');
 
+        expect(getShippingQuote).toHaveBeenCalledTimes(1);
         expect(getShippingQuote).toHaveBeenCalledWith('Test');
         expect(getShippingQuote).toHaveReturned(null);
         expect(info).toMatch(/unavailable/i);
+    });
+});
+
+vi.mock('../src/libs/analytics');
+
+describe('renderPage', () => {
+    it('should return the pages content', async () => {
+        vi.mocked(trackPageView);
+
+        const content = await renderPage();
+
+        expect(trackPageView).toHaveBeenCalledTimes(1);
+        expect(trackPageView).toHaveBeenCalledWith('/home');
+        expect(trackPageView).toHaveReturned(undefined);
+        expect(content).toMatch(/content/i);
+    });
+});
+
+vi.mock('../src/libs/payment');
+
+describe('submitOrder', () => {
+    it('should return success true given a valid order and credit card', async () => {
+        vi.mocked(charge).mockResolvedValue({ status: 'success' });
+        const order = { totalAmount: 12};
+        const creditCard = { creditCardNumber: 1234 };
+
+        const response = await submitOrder(order, creditCard);
+
+        expect(charge).toBeCalledTimes(1);
+        expect(charge).toHaveBeenCalledWith(creditCard, 12);
+        expect(charge).toHaveReturned({ status: 'success' });
+        expect(response).toHaveProperty('success');
+        expect(response.success).toBe(true);
+    });
+
+    it('should return success false given an invalid order', async () => {
+        vi.mocked(charge).mockResolvedValue({ status: 'failed' });
+        const order = {};
+        const creditCard = { creditCardNumber: 1234 };
+
+        const response = await submitOrder(order, creditCard);
+
+        expect(charge).toBeCalledTimes(1);
+        expect(charge).toHaveBeenCalledWith(creditCard, undefined);
+        expect(charge).toHaveReturned({ status: 'failed' });
+        expect(response).toHaveProperty('success');
+        expect(response.success).toBe(false);
+        expect(response).toHaveProperty('error');
+        expect(response.error).toMatch(/error/i);
+    });
+
+    it('should return success false given an invalid credit card', async () => {
+        vi.mocked(charge).mockResolvedValue({ status: 'failed' });
+        const order = { totalAmount: 12};
+        const creditCard = {};
+
+        const response = await submitOrder(order, creditCard);
+
+        expect(charge).toBeCalledTimes(1);
+        expect(charge).toHaveBeenCalledWith({}, 12);
+        expect(charge).toHaveReturned({ status: 'failed' });
+        expect(response).toHaveProperty('success');
+        expect(response.success).toBe(false);
+        expect(response).toHaveProperty('error');
+        expect(response.error).toMatch(/error/i);
+    });
+});
+
+vi.mock('../src/libs/email', async (importOriginal) => {
+    const originalModule = await importOriginal();
+
+    return {
+        ...originalModule,
+        sendEmail: vi.fn()
+    };
+});
+
+describe('signUp', () => {
+    it('should return true if email is valid', async () => {
+        vi.mocked(sendEmail).mockResolvedValue(undefined);
+        const email = "name@domain.com";
+
+        const r = await signUp(email);
+
+        expect(sendEmail).toBeCalledTimes(1);
+        const args = vi.mocked(sendEmail).mock.calls[0];
+        expect(args[0]).toBe(email);
+        expect(args[1]).toMatch(/welcome/i);
+        expect(r).toBe(true);
+    });
+
+    it('should return false if email is not valid', async () => {
+        vi.mocked(sendEmail).mockResolvedValue(undefined);
+        const email = "a";
+
+        const r = await signUp(email);
+
+        expect(sendEmail).toBeCalledTimes(0);
+        expect(r).toBe(false);
+    });
+});
+
+describe('login', () => {
+    it('should email the one-time login code', async () => {
+        const spy = vi.spyOn(security, 'generateCode');
+        const email = "name@domain.com";
+
+        await login(email);
+
+        expect(sendEmail).toBeCalledTimes(1);
+        const securityCode = spy.mock.results[0].value.toString();
+        expect(sendEmail).toHaveBeenCalledWith(email, securityCode);
     });
 });
