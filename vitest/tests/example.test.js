@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, beforeAll, afterEach, afterAll } from "vitest";
+import {describe, it, expect, beforeEach, beforeAll, afterEach, afterAll, vi} from "vitest";
 
 describe('test suite', () => {
     it('test case', () => {
@@ -58,5 +58,36 @@ describe('test suite', () => {
 
     afterAll(() => {
         console.log('after all called');
+    });
+});
+
+describe('test suite', () => {
+    it('test case 1', () => {
+        const greet = vi.fn();
+
+        greet.mockReturnValue('Hello');
+
+        const r = greet();
+        console.log(r);
+    });
+
+    it('test case 2', async () => {
+        const greet = vi.fn();
+
+        greet.mockResolvedValue('Hello');
+
+        const r = await greet();
+        console.log(r);
+    });
+
+    it('test case 3', async () => {
+        const greet = vi.fn();
+
+        greet.mockImplementation(name => 'Hello ' + name);
+
+        const r = await greet('Nate');
+        expect(greet).toHaveBeenCalledTimes(1);
+        expect(greet).toHaveBeenCalled();
+        expect(greet).toHaveBeenCalledWith('Nate');
     });
 });
