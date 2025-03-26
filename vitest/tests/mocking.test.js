@@ -214,4 +214,3 @@ describe('getDiscount', () => {
         expect(getDiscount()).toBe(0);
     });
 });
-
