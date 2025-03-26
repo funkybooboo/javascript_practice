@@ -91,3 +91,18 @@ describe('test suite', () => {
         expect(greet).toHaveBeenCalledWith('Nate');
     });
 });
+
+describe('test suite', () => {
+    it('test case 1', () => {
+        const sendText = vi.fn();
+
+        sendText.mockReturnValue('ok');
+
+        const r = sendText('message');
+
+        expect(sendText).toHaveBeenCalledWith('message');
+        expect(sendText).toHaveBeenCalledTimes(1);
+        expect(r).toBe('ok');
+    });
+});
+
